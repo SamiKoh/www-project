@@ -7,11 +7,15 @@
     <div v-if="!gameRunning">
       <PlayerSelection v-on:single="setMode"></PlayerSelection>
       <h5>Pelaajan 1 nimi</h5>
-      <PlayerName :name="player1.name"></PlayerName>
+      <div class="col-md-6 offset-md-3">
+        <input id="pname" class="form-control required" type="text" v-model="player1.name">
+      </div>
       <br>
       <div v-if="!single">
         <h5>Pelaajan 2 nimi</h5>
-        <PlayerName :name="player2.name"></PlayerName>
+        <div class="col-md-6 offset-md-3">
+          <input id="pname" class="form-control required" type="text" v-model="player2.name">
+        </div>
         <br>
       </div>
       <button class="btn btn-primary" @click="start">Aloita</button>
@@ -24,23 +28,21 @@
 import Game from "@/components/Game.vue";
 import Scoreboard from "@/components/Scoreboard.vue";
 import PlayerSelection from "@/components/PlayerSelection.vue";
-import PlayerName from "@/components/PlayerName.vue";
 export default {
   components: {
     Game,
     Scoreboard,
-    PlayerSelection,
-    PlayerName
+    PlayerSelection
   },
   data: function() {
     return {
       player1: {
-        name: "Pelaaja 1",
+        name: "",
         score: 0,
         marker: "X"
       },
       player2: {
-        name: "Pelaaja 2",
+        name: "",
         score: 0,
         marker: "O"
       },
@@ -62,6 +64,7 @@ export default {
 
 
 <style>
-h5 {
+input {
+  text-align: center;
 }
 </style>

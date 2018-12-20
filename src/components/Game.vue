@@ -29,7 +29,7 @@
         <br>Tasapeli!
       </div>
       <div>
-        <button v-on:click="reload()">Uudestaan</button>
+        <button type="button" class="btn btn-primary" v-on:click="reload()">Uudestaan</button>
       </div>
     </div>
   </div>
