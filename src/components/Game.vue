@@ -1,40 +1,38 @@
 <template>
+  <div>
+    <h1>Ristinolla</h1>
+    <h3>{{ marker }}:n vuoro laittaa merkkinsä.</h3>
+
     <div>
-        <h1>Ristinolla</h1>
-        <h3> {{ marker }}:n vuoro laittaa merkkinsä.</h3>
-
-        <div>
-            <table id="gametable">
-                <tr>
-                    <td v-on:click="addMarker($event)"></td>
-                    <td v-on:click="addMarker($event)"></td>
-                    <td v-on:click="addMarker($event)"></td>
-                </tr>  
-                <tr>
-                    <td v-on:click="addMarker($event)"></td>
-                    <td v-on:click="addMarker($event)"></td>
-                    <td v-on:click="addMarker($event)"></td>
-                </tr>
-                <tr>
-                    <td v-on:click="addMarker($event)"></td>
-                    <td v-on:click="addMarker($event)"></td>
-                    <td v-on:click="addMarker($event)"></td>
-                </tr>
-            </table>
-            <div v-if="victory">
-                <br>
-                {{ marker }} voitti pelin!
-            </div>
-            <div v-if="tie">
-                <br>
-                Tasapeli!
-            </div>
-            <div>
-                <button v-on:click="reload()">Uudestaan</button>
-            </div>
-
-        </div>
+      <table id="gametable">
+        <tr>
+          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)"></td>
+        </tr>
+        <tr>
+          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)"></td>
+        </tr>
+        <tr>
+          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)"></td>
+        </tr>
+      </table>
+      <div v-if="victory">
+        <br>
+        {{ marker }} voitti pelin!
+      </div>
+      <div v-if="tie">
+        <br>Tasapeli!
+      </div>
+      <div>
+        <button v-on:click="reload()">Uudestaan</button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
