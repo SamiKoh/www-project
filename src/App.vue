@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <div id="nav">
+      <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/play">Play</router-link>
     </div>
     <router-view/>
   </div>
@@ -26,4 +27,6 @@
     }
   }
 }
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
 </style>
