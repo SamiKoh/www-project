@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Play from "./views/Play.vue";
-import Stats from "./views/Stats.vue";
 
 Vue.use(Router);
 
@@ -29,8 +28,8 @@ export default new Router({
       component: () => import("./views/About.vue")
     },
     {
-      path: "/about",
-      name: "about",
+      path: "/stats",
+      name: "stats",
       component: () => import("./views/Stats.vue")
     }
   ]

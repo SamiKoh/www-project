@@ -6,19 +6,19 @@
     <div>
       <table id="gametable">
         <tr>
-          <td v-on:click="addMarker($event)"></td>
-          <td v-on:click="addMarker($event)"></td>
-          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)">{{ board[0].row[0] | symbol }}</td>
+          <td v-on:click="addMarker($event)">{{ board[0].row[1] | symbol }}</td>
+          <td v-on:click="addMarker($event)">{{ board[0].row[2] | symbol }}</td>
         </tr>
         <tr>
-          <td v-on:click="addMarker($event)"></td>
-          <td v-on:click="addMarker($event)"></td>
-          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)">{{ board[1].row[0] | symbol }}</td>
+          <td v-on:click="addMarker($event)">{{ board[1].row[1] | symbol }}</td>
+          <td v-on:click="addMarker($event)">{{ board[1].row[2] | symbol }}</td>
         </tr>
         <tr>
-          <td v-on:click="addMarker($event)"></td>
-          <td v-on:click="addMarker($event)"></td>
-          <td v-on:click="addMarker($event)"></td>
+          <td v-on:click="addMarker($event)">{{ board[2].row[0] | symbol }}</td>
+          <td v-on:click="addMarker($event)">{{ board[2].row[1] | symbol }}</td>
+          <td v-on:click="addMarker($event)">{{ board[2].row[2] | symbol }}</td>
         </tr>
       </table>
       <div v-if="victory">
@@ -37,23 +37,34 @@
 
 <script>
 export default {
+  props: ["ai", "start"],
+
   data: function() {
     return {
       rounds: 0,
       victory: false,
       tie: false,
       marker: "X",
-      board: [[1, 1, 2], [0, 2, 2], [2, 1, 1]]
+      board: [{ row: [0, 0, 0] }, { row: [0, 0, 0] }, { row: [0, 0, 0] }]
     };
+  },
+  filters: {
+    symbol: function(num) {
+      if (!num) return "";
+      return num == 1 ? "X" : "O";
+    }
   },
   methods: {
     checkRows: function() {
       let match = false;
       this.board.forEach(element => {
-        if (element[0] == 0) {
+        if (element.row[0] == 0) {
           // empty value in current row
           return;
-        } else if (element[0] == element[1] && element[1] == element[2]) {
+        } else if (
+          element.row[0] == element.row[1] &&
+          element.row[1] == element.row[2]
+        ) {
           match = true;
         }
       });
@@ -63,9 +74,9 @@ export default {
       let match = false;
       for (let i = 0; i < this.board.length; i++) {
         if (
-          this.board[0][i] == this.board[1][i] &&
-          this.board[1][i] == this.board[2][i] &&
-          this.board[0][i] != 0
+          this.board[0].row[i] == this.board[1].row[i] &&
+          this.board[1].row[i] == this.board[2].row[i] &&
+          this.board[0].row[i] != 0
         ) {
           match = true;
         }
@@ -75,15 +86,15 @@ export default {
     checkDiagonal: function() {
       let match = false;
       if (
-        this.board[0][0] == this.board[1][1] &&
-        this.board[1][1] == this.board[2][2] &&
-        this.board[0][0] != 0
+        this.board[0].row[0] == this.board[1].row[1] &&
+        this.board[1].row[1] == this.board[2].row[2] &&
+        this.board[0].row[0] != 0
       ) {
         match = true;
       } else if (
-        this.board[0][2] == this.board[1][1] &&
-        this.board[1][1] == this.board[2][0] &&
-        this.board[1][1] != 0
+        this.board[0].row[2] == this.board[1].row[1] &&
+        this.board[1].row[1] == this.board[2].row[0] &&
+        this.board[1].row[1] != 0
       ) {
         match = true;
       }
@@ -98,29 +109,37 @@ export default {
       return foundStraight;
     },
     play: function() {
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          let element = document.getElementById("gametable").rows[i].cells[j];
-          switch (element.innerText) {
-            case "X":
-              this.board[i][j] = 1;
-              break;
-            case "O":
-              this.board[i][j] = 2;
-              break;
-            default:
-              this.board[i][j] = 0;
+      console.log(this.board);
+      if (this.gameResults()) return true;
+      else if (this.ai) {
+        this.computer();
+        return this.gameResults();
+      } else return false;
+    },
+    addMarker: function(caller) {
+      const rows = document.querySelectorAll("tr");
+      const rowsArray = Array.from(rows);
+      const i = rowsArray.findIndex(row => row.contains(caller.target));
+      const columns = Array.from(rowsArray[i].querySelectorAll("td"));
+      const j = columns.findIndex(column => column == event.target);
+      console.log(i, j);
+      if (!this.victory && !this.board[i][j]) {
+        this.$set(this.board[i].row, j, this.marker == "X" ? 1 : 2);
+        this.rounds++;
+        if (this.play()) {
+          console.log("Victory!");
+          this.victory = true;
+          this.$emit("victory", this.marker == "X" ? 1 : 2);
+        } else {
+          if (this.rounds == 9) {
+            this.tie = true;
+            this.$emit("victory", 0);
           }
+          this.marker = this.marker == "X" ? "O" : "X";
         }
       }
       console.log(this.board);
-      return this.gameResults();
-    },
-    addMarker: function(caller) {
-      console.log("marker requested by ", caller);
-      let square = caller.target;
-      if (!this.victory) {
-        if (!square.innerText) {
+      /* if (!square.innerText) {
           console.log("Cell is empty, adding marker");
           square.innerText = this.marker;
           this.rounds++;
@@ -129,16 +148,34 @@ export default {
             this.victory = true;
           } else {
             if (this.rounds == 9) {
-              /* alert("Tasapeli!"); */
               this.tie = true;
             }
             this.marker = this.marker == "X" ? "O" : "X";
           }
-        }
-      }
+        } */
     },
     reload: function() {
+      this.computer();
       /* TODO */
+    },
+    computer: function() {
+      let i = this.random(0, 3);
+      let j = this.random(0, 3);
+      while (this.board[i].row[j] > 0) {
+        i = this.random(0, 3);
+        j = this.random(0, 3);
+      }
+      this.$set(this.board[i].row, j, this.start ? 1 : 2);
+
+      console.log(i);
+    },
+    random: function(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+  },
+  mounted: function() {
+    if (this.start) {
+      this.computer();
     }
   },
 
