@@ -128,7 +128,7 @@ export default {
           this.axios
             .post(this.api + "gameresults", {
               winner: winner.name,
-              loser: loser,
+              loser: loser.name,
               winnerMarker: "O",
               singlePlayer: this.single
             })
