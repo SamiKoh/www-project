@@ -5,14 +5,14 @@ import { Doughnut, mixins } from "vue-chartjs";
 export default {
   extends: Doughnut,
   mixins: [mixins.reactiveProp],
-  props: ["data"],
+  props: ["chartData"],
   data() {
     return {
       options: {}
     };
   },
   mounted: function() {
-    this.renderChart(this.data, this.options);
+    this.renderChart(this.chartData, this.options);
   }
 };
 </script>

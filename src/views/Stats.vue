@@ -4,7 +4,7 @@
     <div class="container">
       <h3>Voittaja</h3>
       <br>
-      <MarkerPie :data="byMarker"></MarkerPie>
+      <MarkerPie :chartData="byMarker"></MarkerPie>
     </div>
 
     <div class="container">
@@ -45,12 +45,29 @@ export default {
   },
   mounted: function() {
     this.axios.get(this.api + "gameresults/total").then(res => {
-      console.log(res);
+      console.log("total", res);
+      this.total = res.data[0].total;
     });
 
     this.axios.get(this.api + "gameresults/bymarker").then(res => {
-      let arr = res.body;
-      arr.forEach(element => {});
+      let arr = res.data;
+      this.byMarker.datasets[0].data = [];
+      this.byMarker.labels = [];
+      arr.forEach(element => {
+        console.log(element);
+        this.byMarker.datasets[0].data.push(element.total_games);
+        if (element._id == "X") {
+          this.byMarker.labels.push("Aloittaja");
+        } else this.byMarker.labels.push("Toinen pelaaja");
+      });
+      let resolved =
+        this.byMarker.datasets[0].data[0] + this.byMarker.datasets[0].data[1];
+      this.byMarker.datasets[0].data.push(this.total - resolved);
+      this.byMarker.labels.push("Tasapeli");
+    });
+
+    this.axios.get(this.api + "gameresults/byplayer").then(res => {
+      console.log(res);
     });
   }
 };

@@ -17,7 +17,7 @@ export default {
   mounted: function() {
     this.axios.get(this.api + "about").then(res => {
       console.log(res);
-      this.md = res.body.content;
+      this.md = res.data.content;
     });
   }
 };
