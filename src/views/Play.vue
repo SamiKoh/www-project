@@ -100,15 +100,17 @@ export default {
     handleVictory: function(result) {
       console.log(result);
       var winner;
+      var loser;
       switch (result) {
         case 1:
           /* this.p1starts ? this.player1.score++ : this.player2.score++; */
           winner = this.p1starts ? this.player1 : this.player2;
-          winner.score++;
+          (loser = winner == this.player1 ? this.player2 : this.player1),
+            winner.score++;
           this.axios
             .post(this.api + "gameresults", {
               winner: winner.name,
-              loser: winner == this.player1 ? this.player2 : this.player1,
+              loser: loser.name,
               winnerMarker: "X",
               singlePlayer: this.single
             })

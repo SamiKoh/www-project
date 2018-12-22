@@ -136,7 +136,7 @@ export default {
           this.victory = true;
           this.$emit("victory", this.marker == "X" ? 1 : 2);
         } else {
-          if (this.rounds == 8) {
+          if (this.rounds >= 8) {
             this.tie = true;
             this.$emit("victory", 0);
           }
