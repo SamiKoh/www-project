@@ -10,7 +10,10 @@
     <div class="container">
       <h3>Parhaat pelaajat</h3>
       <br>
-      <WinnerBar :key="refresh" :data="byWinner"></WinnerBar>
+      <ul>
+        <li v-for="winner in winners" :key="winner.name">{{winner.name}}: {{winner.score}}</li>
+      </ul>
+      <!-- <WinnerBar :key="refresh" :data="byWinner"></WinnerBar> -->
     </div>
   </div>
 </template>
@@ -18,17 +21,18 @@
 <script>
 import NavBar from "@/components/NavBar";
 import MarkerPie from "@/components/MarkerPie";
-import WinnerBar from "@/components/WinnerBar";
+/* import WinnerBar from "@/components/WinnerBar"; */
 export default {
   components: {
     NavBar,
-    MarkerPie,
-    WinnerBar
+    MarkerPie
+    /* WinnerBar */
   },
   data() {
     return {
       total: 0,
       refresh: 0,
+      winners: [{ name: "", score: 0 }],
       byMarker: {
         datasets: [
           {
@@ -79,10 +83,12 @@ export default {
 
     this.axios.get(this.api + "gameresults/byplayer").then(res => {
       console.log(res);
+      this.winners = [];
       this.byWinner.datasets[0].data = [];
       if (!this.byWinner.datasets[0].backgroundColor)
         this.byWinner.datasets[0].backgroundColor = [];
       res.data.victories.forEach(v => {
+        this.winners.push({ name: v._id, score: v.victories });
         this.byWinner.datasets[0].data.push(v.victories);
         this.byWinner.datasets[0].backgroundColor.push(this.randomColor());
         this.byWinner.labels.push(v._id);
