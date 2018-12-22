@@ -11,7 +11,7 @@
       <h3>Parhaat pelaajat</h3>
       <br>
       <ul>
-        <li v-for="winner in winners" :key="winner.name">{{winner.name}}: {{winner.score}}</li>
+        <li v-for="winner in winners" :key="winner.score">{{winner.name}}: {{winner.score}}</li>
       </ul>
       <!-- <WinnerBar :key="refresh" :data="byWinner"></WinnerBar> -->
     </div>
@@ -94,7 +94,15 @@ export default {
         this.byWinner.labels.push(v._id);
       });
     });
+
     this.refresh++;
   }
 };
 </script>
+
+<style>
+ul {
+  text-align: center;
+  list-style-position: inside;
+}
+</style>
