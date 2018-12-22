@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>Ristinolla</h1>
-    <h3>{{ marker }}:n vuoro laittaa merkkinsä.</h3>
+    <h3 v-if="!victory">{{ marker }}:n vuoro laittaa merkkinsä.</h3>
+    <br v-else>
 
     <div>
       <table id="gametable">
@@ -28,9 +29,7 @@
       <div v-if="tie">
         <br>Tasapeli!
       </div>
-      <div>
-        <button type="button" class="btn btn-primary" v-on:click="reload()">Uudestaan</button>
-      </div>
+      <div></div>
     </div>
   </div>
 </template>
@@ -109,10 +108,15 @@ export default {
       return foundStraight;
     },
     play: function() {
+      console.log("round", this.rounds);
       console.log(this.board);
       if (this.gameResults()) return true;
       else if (this.ai) {
+        this.rounds++;
         this.computer();
+        console.log("changing marker", this.marker);
+        this.marker = this.marker == "X" ? "O" : "X";
+        console.log(" marker changed", this.marker);
         return this.gameResults();
       } else return false;
     },
@@ -123,7 +127,8 @@ export default {
       const columns = Array.from(rowsArray[i].querySelectorAll("td"));
       const j = columns.findIndex(column => column == event.target);
       console.log(i, j);
-      if (!this.victory && !this.board[i][j]) {
+      if (!this.victory && !this.board[i].row[j]) {
+        console.log("player set marker");
         this.$set(this.board[i].row, j, this.marker == "X" ? 1 : 2);
         this.rounds++;
         if (this.play()) {
@@ -131,32 +136,13 @@ export default {
           this.victory = true;
           this.$emit("victory", this.marker == "X" ? 1 : 2);
         } else {
-          if (this.rounds == 9) {
+          if (this.rounds == 8) {
             this.tie = true;
             this.$emit("victory", 0);
           }
           this.marker = this.marker == "X" ? "O" : "X";
         }
       }
-      console.log(this.board);
-      /* if (!square.innerText) {
-          console.log("Cell is empty, adding marker");
-          square.innerText = this.marker;
-          this.rounds++;
-          if (this.play()) {
-            console.log("Victory!");
-            this.victory = true;
-          } else {
-            if (this.rounds == 9) {
-              this.tie = true;
-            }
-            this.marker = this.marker == "X" ? "O" : "X";
-          }
-        } */
-    },
-    reload: function() {
-      this.computer();
-      /* TODO */
     },
     computer: function() {
       let i = this.random(0, 3);
@@ -166,8 +152,7 @@ export default {
         j = this.random(0, 3);
       }
       this.$set(this.board[i].row, j, this.start ? 1 : 2);
-
-      console.log(i);
+      console.log("computer set marker");
     },
     random: function(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
@@ -175,12 +160,8 @@ export default {
   },
   mounted: function() {
     if (this.start) {
-      this.computer();
+      this.play();
     }
-  },
-
-  created: function() {
-    this.reload();
   }
 };
 </script>

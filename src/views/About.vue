@@ -1,15 +1,18 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-    <fb></fb>
+  <div>
+    <NavBar></NavBar>
+    <div>{{ md }}</div>
   </div>
 </template>
 
 <script>
-import fb from "@/components/FB.vue";
+import NavBar from "@/components/NavBar";
 export default {
-  components: {
-    fb
+  components: { NavBar },
+  data() {
+    return {
+      md: ""
+    };
   }
 };
 </script>

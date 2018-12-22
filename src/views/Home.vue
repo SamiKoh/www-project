@@ -1,18 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Tervetuloa</h1>
+    <br>
+    <fb></fb>
+    <br>
+    <br>
+    <button @click="redirect" class="btn btn-dark">Jatka kirjautumatta</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import fb from "@/components/FB.vue";
 export default {
-  name: "home",
   components: {
-    HelloWorld
+    fb
+  },
+  methods: {
+    redirect: function() {
+      this.$router.push("/play");
+    }
   }
 };
 </script>

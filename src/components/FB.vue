@@ -2,9 +2,8 @@
   <fb-signin-button
     :params="fbSignInParams"
     @success="onSignInSuccess"
-    @error="onSignInError">
-    Sign in with Facebook
-  </fb-signin-button>
+    @error="onSignInError"
+  >Sign in with Facebook</fb-signin-button>
 </template>
 
 <script>
@@ -19,8 +18,12 @@ export default {
   },
   methods: {
     onSignInSuccess(response) {
+      console.log("FB response: ", response);
       FB.api("/me", dude => {
         console.log(`Good to see you, ${dude.name}.`);
+        console.log("dude: ", dude);
+        localStorage.setItem("fbUser", dude);
+        this.$router.push("/play");
       });
     },
     onSignInError(error) {
