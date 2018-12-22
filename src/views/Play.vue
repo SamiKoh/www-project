@@ -103,7 +103,7 @@ export default {
       var loser;
       switch (result) {
         case 1:
-          /* this.p1starts ? this.player1.score++ : this.player2.score++; */
+          /* starting player wins */
           winner = this.p1starts ? this.player1 : this.player2;
           loser = winner == this.player1 ? this.player2 : this.player1;
           winner.score++;
@@ -141,6 +141,14 @@ export default {
           break;
         case 0:
           /* tie */
+          this.axios
+            .post(this.api + "gameresults", {
+              winner: "",
+              loser: "",
+              winnerMarker: "",
+              singlePlayer: this.single
+            })
+            .catch(err => console.log(err));
           break;
         default:
           /* unexpected result */
