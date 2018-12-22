@@ -30,5 +30,6 @@ export default {
   width: 80vw;
   align-content: flex-start;
   text-align: left;
+  margin-bottom: 3em;
 }
 </style>
