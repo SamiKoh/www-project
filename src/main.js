@@ -49,8 +49,7 @@ window.fbAsyncInit = function() {
 Vue.mixin({
   data() {
     return {
-      /* api: "http://127.0.0.1:3000/api/" */
-      api: "localhost:3000/api/"
+      api: "http://127.0.0.1:3000/api/"
     };
   },
   methods: {
