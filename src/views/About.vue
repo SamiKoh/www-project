@@ -1,7 +1,9 @@
 <template>
   <div>
     <NavBar></NavBar>
-    <div v-html="marked(md)"></div>
+    <div class="container">
+      <div v-html="marked(md)"></div>
+    </div>
   </div>
 </template>
 
@@ -22,3 +24,11 @@ export default {
   }
 };
 </script>
+
+<style >
+.container {
+  width: 80vw;
+  align-content: flex-start;
+  text-align: left;
+}
+</style>

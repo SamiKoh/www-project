@@ -4,13 +4,13 @@
     <div class="container">
       <h3>Voittaja</h3>
       <br>
-      <MarkerPie :chartData="byMarker"></MarkerPie>
+      <MarkerPie :key="refresh" :chartData="byMarker"></MarkerPie>
     </div>
 
     <div class="container">
       <h3>Parhaat pelaajat</h3>
       <br>
-      <WinnerBar :data="byWinner"></WinnerBar>
+      <WinnerBar :key="refresh" :data="byWinner"></WinnerBar>
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       total: 0,
+      refresh: 0,
       byMarker: {
         datasets: [
           {
@@ -43,6 +44,16 @@ export default {
       }
     };
   },
+  methods: {
+    randomColor: function() {
+      var length = 6;
+      var chars = "0123456789ABCDEF";
+      var hex = "#";
+      while (length--) hex += chars[(Math.random() * 16) | 0];
+      return hex;
+    }
+  },
+
   mounted: function() {
     this.axios.get(this.api + "gameresults/total").then(res => {
       console.log("total", res);
@@ -68,7 +79,14 @@ export default {
 
     this.axios.get(this.api + "gameresults/byplayer").then(res => {
       console.log(res);
+      this.byWinner.datasets[0].data = [];
+      res.data.victories.forEach(v => {
+        this.byWinner.datasets[0].data.push(v.victories);
+        this.byWinner.datasets[0].backgroundColor.push(this.randomColor);
+        this.byWinner.labels.push(v._id);
+      });
     });
+    this.refresh++;
   }
 };
 </script>
