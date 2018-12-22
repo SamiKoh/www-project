@@ -12,6 +12,8 @@ import FBSignInButton from "vue-facebook-signin-button";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
+const marked = require("marked");
+
 /* Register plugins for Vue */
 Vue.use(FBSignInButton);
 Vue.use(VueAxios, axios);
@@ -49,6 +51,12 @@ Vue.mixin({
     return {
       api: "http://127.0.0.1:3000/api/"
     };
+  },
+  methods: {
+    /* parse markdown */
+    marked: function(data) {
+      return marked(data);
+    }
   }
 });
 

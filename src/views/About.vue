@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar></NavBar>
-    <div>{{ md }}</div>
+    <div v-html="marked(md)"></div>
   </div>
 </template>
 
@@ -13,6 +13,12 @@ export default {
     return {
       md: ""
     };
+  },
+  mounted: function() {
+    this.axios.get("about").then(res => {
+      console.log(res);
+      this.md = res.body.content;
+    });
   }
 };
 </script>
