@@ -105,8 +105,8 @@ export default {
         case 1:
           /* this.p1starts ? this.player1.score++ : this.player2.score++; */
           winner = this.p1starts ? this.player1 : this.player2;
-          (loser = winner == this.player1 ? this.player2 : this.player1),
-            winner.score++;
+          loser = winner == this.player1 ? this.player2 : this.player1;
+          winner.score++;
           this.axios
             .post(this.api + "gameresults", {
               winner: winner.name,
@@ -123,11 +123,12 @@ export default {
           break;
         case 2:
           winner = this.p1starts ? this.player2 : this.player1;
+          loser = winner == this.player1 ? this.player2 : this.player1;
           winner.score++;
           this.axios
             .post(this.api + "gameresults", {
               winner: winner.name,
-              loser: winner == this.player1 ? this.player2 : this.player1,
+              loser: loser,
               winnerMarker: "O",
               singlePlayer: this.single
             })
